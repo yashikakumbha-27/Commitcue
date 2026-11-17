@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
-async function fetchStats(owner, repo) {
+export async function fetchStats(owner, repo) {
   for (let i = 0; i < 6; i++) {
     const res = await fetch(`https://api.github.com/repos/${owner}/${repo}/stats/contributors`);
     if (res.status === 202) { await new Promise(r => setTimeout(r, 2000)); continue; } // GitHub is still computing
@@ -9,12 +9,13 @@ async function fetchStats(owner, repo) {
     if (res.status === 403) throw new Error('GitHub rate limit reached. Try again later.');
     if (res.status === 204) return [];
     if (!res.ok) throw new Error('GitHub error ' + res.status);
-    return res.json();
+        const json = await res.json();
+    return json.filter(c => c.author); // skip deleted accounts
   }
   throw new Error('GitHub is still preparing stats. Try again in a minute.');
 }
 
-function analyse(data) {
+export function analyse(data) {
   const rows = data.map(c => ({
     name: c.author.login,
     commits: c.total,
