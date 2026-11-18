@@ -2,7 +2,7 @@
 
 Learn Git visually, track team contributions.
 
-**Live demo:** YOUR_LIVE_LINK
+**Live demo:** https://commitcue.vercel.app/
 
 ## Problem
 Students memorize Git commands without understanding the commit graph behind them, and teachers cannot easily see who contributed what in group projects.
